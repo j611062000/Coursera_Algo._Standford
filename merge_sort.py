@@ -1,4 +1,7 @@
 def isIndexSafe(index, array):
+    """
+    Check if the index is in the range of array
+    """
     if index <= len(array)-1:
         return True
     elif index > len(array)-1:
