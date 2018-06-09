@@ -3,17 +3,16 @@ def selection_sort(array):
     start = 0
 
     while True:
-
         # to catch the index of minimum value in a subarray
         index = start
         # to catch the minimum value in a subarray
         min_temp = array[start]
 
         for i in range(start, len(array)):
-
             if array[i] < min_temp:
                 min_temp = array[i]
                 index = i
+
         # moving the minimum value to the first place in a subarray
         temp = array[index]
         del array[index]
