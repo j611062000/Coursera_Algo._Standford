@@ -4,11 +4,9 @@ def swap(array, index1, index2):
     array[index2] = temp
 
 def bubble_sort(array):
-
     """
     if the len(array) is n, then it takes n-1 steps to finish the bubble sort
     """
-
     swap_count = 1
 
     """
