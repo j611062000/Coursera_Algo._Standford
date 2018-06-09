@@ -9,10 +9,14 @@ def isIndexSafe(index, array):
 
 def mergesort(array):
 
-    if len(array) <= 1:
+    if len(array) == 1:
         return array
 
     l=len(array)//2
+
+    """
+    divide the original problem to subproblems by recurssion
+    """
     Larray=mergesort(array[:l])
     Rarray=mergesort(array[l:])
 
@@ -20,6 +24,9 @@ def mergesort(array):
     i=-1
     j=-1
 
+    """
+    merge the solution of these 2 subproblems to get the global solution
+    """
     while isIndexSafe(i+1,Larray) or isIndexSafe(j+1,Rarray):
 
         if isIndexSafe(i+1,Larray) and isIndexSafe(j+1,Rarray):
@@ -42,4 +49,6 @@ def mergesort(array):
 
 print(mergesort([5,1,0,4,6,8,7]))
 
+lst=[1,4,2]
+print(sorted(lst))
 
