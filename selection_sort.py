@@ -22,7 +22,7 @@ def selection_sort(array):
             break
         else:
             start+=1
-
+        print(array)
     return array
 
-print(selection_sort([1,4,2,100,3,1,-1]))
+print(selection_sort([1,100,2,42,2,1,33]))
