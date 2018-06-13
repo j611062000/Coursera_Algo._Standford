@@ -1,3 +1,8 @@
+def swap(array, index1, index2):
+    temp = array[index1]
+    array[index1] = array[index2]
+    array[index2] = temp
+
 def selection_sort(array):
 
     start = 0
@@ -14,9 +19,7 @@ def selection_sort(array):
                 index = i
 
         # moving the minimum value to the first place in a subarray
-        temp = array[index]
-        del array[index]
-        array.insert(start,temp)
+        swap(array, index, start)
 
         if start+1 == len(array):
             break
@@ -25,4 +28,5 @@ def selection_sort(array):
         print(array)
     return array
 
-print(selection_sort([1,100,2,42,2,1,33]))
+if __name__ == "__main__":
+    print(selection_sort([1,100,2,42,2,1,33]))
