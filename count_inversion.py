@@ -41,11 +41,14 @@ def inversionCountByMergesort(array):
             break
     return temp
 
-def main(): # a test case for counting number of inversion paris
-    global inversion_count
-    inversion_count = 0
-    mergesort([5,3,1,6,4,2])
-    print(inversion_count)
+# test case listed as below
 
-main()
+global inversion_count
+inversion_count = 0
 
+temp = []
+with open("apple.txt", "r") as file:
+    for element in file.readlines():
+        temp.append(int(element[:-1]))
+inversionCountByMergesort( temp)
+print(inversion_count)
