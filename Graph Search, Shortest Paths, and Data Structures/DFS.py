@@ -12,6 +12,10 @@ class Graph:
     def addedge(self, nodeU, nodeV):
         # the directed edge is from U to V (U --> V)
         self.graph[nodeU].append(nodeV)
+    
+    def flushDFS(self):
+        self.DFS_path = []
+        self.topo = []
 
     def DFS(self, startingVertex):
         self.DFS_path.append(startingVertex)
@@ -20,20 +24,19 @@ class Graph:
         for adjnode in self.graph[startingVertex]:
             if adjnode not in self.explored_nodes:
                 self.DFS(adjnode)
-            
+
+        # record the topological sort
         self.topo.append(self.stack.pop())
         return self.DFS_path
 
 
 
-def topological_sorting(graph):
-    graph.DFS(1)
-    return graph.topo[::-1]
-
 def testDFS():
     dataset = {1: [2, 3], 2: [4], 3: [4, 5], 4: [5]}
     testGraph = constructGraph(dataset)
-    print("topological_sorting(testGraph)=%s" % (topological_sorting(testGraph)))
+    print("topological_sorting(testGraph)=%s" %
+          (topological_sorting(testGraph)))
+
 
 def constructGraph(dataset):
     g = Graph()
