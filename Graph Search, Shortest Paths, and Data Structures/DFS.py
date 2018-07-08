@@ -17,10 +17,15 @@ class Graph:
         self.DFS_path = []
         self.topo = []
 
-    def DFS(self, startingVertex):
+    def DFS(self, startingVertex, flush = False):
+        
+        if flush:
+            self.flushDFS()
+
         self.DFS_path.append(startingVertex)
         self.explored_nodes.append(startingVertex)
         self.stack.append(startingVertex)
+
         for adjnode in self.graph[startingVertex]:
             if adjnode not in self.explored_nodes:
                 self.DFS(adjnode)
