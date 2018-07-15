@@ -44,3 +44,6 @@ if __name__ == "__main__":
             data_pair = [int(num) for num in element.split(" ")[:-1]]
             dataset[data_pair[0]].append(data_pair[1])
     print(k_algo(dataset))
+
+
+# 434821,968,459,313,211
