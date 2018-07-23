@@ -10,19 +10,56 @@ def bubbleUpComparison(currentNode, parentNode, heapType):
     else:
         return False
 
+def isBubbleDown_R(currentNode, l_child, r_child, heapType):
+    if l_child is None:
+        if heapType == "M":
+            if currentNode < r_child:
+                return True
+        elif heapType == "m":
+            if currentNode > r_child:
+                return True
+
+    elif l_child is not None:
+        if heapType == "M":
+            if l_child < r_child and currentNode < r_child:
+                return True
+        elif heapType == "m":
+            if l_child > r_child and currentNode > r_child:
+                return True
+def isBubbleDown_L(currentNode, l_child, r_child, heapType):
+    if r_child is None:
+        if heapType == "M":
+            if currentNode < l_child:
+                return True
+        elif heapType == "m":
+            if currentNode > l_child:
+                return True
+
+    elif r_child is not None:
+        if heapType == "M":
+            if l_child > r_child and currentNode < l_child:
+                return True
+        elif heapType == "m":
+            if l_child < r_child and currentNode > l_child:
+                return True
 
 def bubbleDownComparison(currentNode, l_child, r_child, heapType):
-    if heapType == "M":
-        if currentNode < l_child and l_child >= r_child:
+    if l_child is not None and r_child is not None:
+        if isBubbleDown_R(currentNode, l_child, r_child, heapType):
+            return "R"
+        elif isBubbleDown_L(currentNode, l_child, r_child, heapType):
             return "L"
-        elif currentNode < r_child and r_child > l_child:
+
+    elif l_child is None and r_child is None:
+        return None
+
+    elif l_child is None:
+        if isBubbleDown_R(currentNode, l_child, r_child, heapType):
             return "R"
 
-    elif heapType == "m":
-        if currentNode > l_child and l_child <= r_child:
+    elif r_child is None:
+        if isBubbleDown_L(currentNode, l_child, r_child, heapType):
             return "L"
-        elif currentNode > r_child and r_child < l_child:
-            return "R"
 
 
 class Heap:
@@ -59,33 +96,39 @@ class Heap:
         assert len(self.Heap) > 1
         return_value = self.Heap[1]
         last_node = self.Heap.pop()
-
         if len(self.Heap) <= 1:
-            return last_node
+            return return_value
 
         self.Heap[1] = last_node
         currentIndex = 1
+        treeLen = len(self.Heap) - 1
 
-        while currentIndex <= len(self.Heap) - 1:
-            try:
-                currentNode = self.Heap[currentIndex]
+        while currentIndex <= treeLen:
+            currentNode = self.Heap[currentIndex]
+
+            # make sure the path of bubble is within the legal path
+            if currentIndex * 2 <= treeLen:
                 l_child = self.Heap[currentIndex * 2]
+            else:
+                l_child = None
+
+            if currentIndex * 2 + 1 <= treeLen:
                 r_child = self.Heap[currentIndex * 2 + 1]
-                bubbledown = bubbleDownComparison(
-                    currentNode, l_child, r_child, self.heapType)
+            else:
+                r_child = None
 
-                if bubbledown == "L":
-                    swap(self.Heap, currentIndex, currentIndex * 2)
-                    currentIndex = currentIndex * 2
+            bubbledown = bubbleDownComparison(
+                currentNode, l_child, r_child, self.heapType)
 
-                elif bubbledown == "R":
-                    swap(self.Heap, currentIndex, currentIndex * 2 + 1)
-                    currentIndex = currentIndex * 2 + 1
+            if bubbledown == "L":
+                swap(self.Heap, currentIndex, currentIndex * 2)
+                currentIndex = currentIndex * 2
 
-                else:
-                    return return_value
+            elif bubbledown == "R":
+                swap(self.Heap, currentIndex, currentIndex * 2 + 1)
+                currentIndex = currentIndex * 2 + 1
 
-            except BaseException:
+            elif bubbledown is None:
                 return return_value
 
     def addNode(self, node):
@@ -93,8 +136,16 @@ class Heap:
         currentIndex = len(self.Heap) - 1
         self.bubbleUp(currentIndex)
 
-def test():
-    testdata = [[1,2,3,4],[4,3,2,1],[2,5,3,4,1],[1],[1,2],[2,1]]
+
+def generalTest():
+    testdata = [
+        [
+            1, 2, 3, 4], [
+            4, 3, 2, 1], [
+                5, 2, 3, 11, 5, 90, 6, 63, 1, 0], [
+                    2, 5, 3, 4, 1], [1], [
+                        1, 2], [
+                            2, 1]]
     for data in testdata:
         print("Test dataset: {}".format(data))
         test = Heap(data, "M")
@@ -102,7 +153,19 @@ def test():
         test = Heap(data, "m")
         print("Heapsort with Min Heap: {}".format(test.heapSort()))
         print("\n\n")
-        
+
+
+def extractTest():
+    testdata = [[2, 3, 4]]
+    for data in testdata:
+        print("Test dataset: {}".format(data))
+        test = Heap(data, "m")
+        print("heapified dataset: {}".format(test.Heap))
+        for i in range(len(data) - 1):
+            test.extract()
+            print("test.Heap=%s" % (test.Heap))
+        print("\n\n")
+
 
 if __name__ == "__main__":
-    test()
+    extractTest()

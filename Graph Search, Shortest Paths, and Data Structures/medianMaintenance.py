@@ -1,6 +1,18 @@
 from heapDataStructure import Heap
 
 
+def printHeap(HeapFormedian):
+    print("maxHeap.Heap=%s" % (HeapFormedian.maxHeap.Heap), end="  |  ")
+    print("minHeap.Heap=%s" % (HeapFormedian.minHeap.Heap))
+
+
+def printTop(HeapFormedian):
+    print(
+        "L Top:{}  ||  R Top:{}".format(
+            HeapFormedian.leftTop,
+            HeapFormedian.rightTop))
+
+
 class HeapFormedian:
 
     """
@@ -11,57 +23,95 @@ class HeapFormedian:
     """
 
     def __init__(self, dataset):
-        self.minHeap = Heap([], "m")
         self.maxHeap = Heap([], "M")
+        self.minHeap = Heap([], "m")
         self.leftTop = None
         self.rightTop = None
+        self.median = None
         for element in dataset:
             self.addNode(element)
+            self.median = self.getMedian()
+            print("New median: ", self.getMedian())
+            print("\n\n")
 
     def addNode(self, node):
-        self.maxHeap.addNode(node)
+        if self.median is None:
+            self.median = node
+            self.minHeap.addNode(node)
+        elif node <= self.median:
+            self.maxHeap.addNode(node)
+            print("new node to left, because of <={}".format(self.median))
+        elif node > self.median:
+            self.minHeap.addNode(node)
+            print("new node to right, because of >{}".format(self.median))
+
+        print("before balanceing:", end=" ")
+        printHeap(self)
+
         if not self.isBalance():
             self.balanceing()
-        try:
-            self.leftTop = self.maxHeap.Heap[1]
-            self.rightTop = self.minHeap.Heap[1]
-        except:
-            pass
+
+        print("after balanceing :", end=" ")
+        printHeap(self)
+
+        # revising the top value of heaps respectively
+        self.reviseHeapTop()
+        printTop(self)
+
 
     def isBalance(self):
         rightnodes = len(self.minHeap.Heap)
         leftnodes = len(self.maxHeap.Heap)
-        if rightnodes - leftnodes <= 1 and rightnodes >= leftnodes:
+        if (rightnodes - leftnodes) == 1 or (rightnodes - leftnodes) == 0:
             return True
         else:
             return False
+
+    def reviseHeapTop(self):
+        lenOfLeftHeap = len(self.maxHeap.Heap)
+        lenOfRightHeap = len(self.minHeap.Heap)
+
+        if lenOfLeftHeap >= 2:
+            self.leftTop = self.maxHeap.Heap[1]
+        elif lenOfLeftHeap < 2:
+            self.leftTop = None
+
+        if lenOfRightHeap >= 2:
+            self.rightTop = self.minHeap.Heap[1]
+        elif lenOfLeftHeap < 2:
+            self.rightTop = None
 
     def balanceing(self):
         while not self.isBalance():
             left_nodes = len(self.maxHeap.Heap)
             right_nodes = len(self.minHeap.Heap)
+
             if left_nodes > right_nodes:
                 self.minHeap.addNode(self.maxHeap.extract())
+            elif right_nodes > left_nodes:
+                self.maxHeap.addNode(self.minHeap.extract())
 
     def getMedian(self):
         assert self.isBalance
-        try:
-            print("self.leftTop=%s, self.rightTop=%s" % (self.leftTop, self.rightTop))
+
+        if self.rightTop is not None and self.leftTop is not None:
             if len(self.maxHeap.Heap) == len(self.minHeap.Heap):
                 return (self.leftTop + self.rightTop) / 2
             else:
                 return self.rightTop
-        except:
-            pass
 
+        else:
+            return self.rightTop
+
+
+def test():
+    testData = [[1, 2, 3, 4, 5, 6, 7, 8, 9]]
+    for test in testData:
+        testcase = HeapFormedian(test)
+        printHeap(testcase)
+        print("median: ", testcase.getMedian())
+        print("\n\n")
 
 
 if __name__ == "__main__":
-    testData = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for i in range(2, len(testData)):
-        print(testData[:i])
-        test = HeapFormedian(testData[:i + 1])
-        print(test.getMedian())
-        print("self.minHeap.Heap=%s" % (test.minHeap.Heap))
-        print("self.maxHeap.Heap=%s" % (test.maxHeap.Heap))
-        print("\n\n")
+    test()
