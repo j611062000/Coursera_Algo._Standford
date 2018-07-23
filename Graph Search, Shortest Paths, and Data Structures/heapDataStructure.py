@@ -37,10 +37,10 @@ def isBubbleDown_L(currentNode, l_child, r_child, heapType):
 
     elif r_child is not None:
         if heapType == "M":
-            if l_child > r_child and currentNode < l_child:
+            if l_child >= r_child and currentNode < l_child:
                 return True
         elif heapType == "m":
-            if l_child < r_child and currentNode > l_child:
+            if l_child <= r_child and currentNode > l_child:
                 return True
 
 def bubbleDownComparison(currentNode, l_child, r_child, heapType):
@@ -74,7 +74,7 @@ class Heap:
     def bubbleUp(self, currentIndex):
         parentIndex = currentIndex // 2
         # if current node is greater than it's parent node, then swap them
-
+        print("Heap:",self.Heap)
         if bubbleUpComparison(
                 self.Heap[currentIndex],
                 self.Heap[parentIndex],
@@ -119,7 +119,8 @@ class Heap:
 
             bubbledown = bubbleDownComparison(
                 currentNode, l_child, r_child, self.heapType)
-
+            print("bubbledown=%s" % (bubbledown))
+            print("currentNode=%s, l_child=%s, r_child=%s" % (currentNode, l_child, r_child))
             if bubbledown == "L":
                 swap(self.Heap, currentIndex, currentIndex * 2)
                 currentIndex = currentIndex * 2
@@ -138,17 +139,11 @@ class Heap:
 
 
 def generalTest():
-    testdata = [
-        [
-            1, 2, 3, 4], [
-            4, 3, 2, 1], [
-                5, 2, 3, 11, 5, 90, 6, 63, 1, 0], [
-                    2, 5, 3, 4, 1], [1], [
-                        1, 2], [
-                            2, 1]]
+    testdata = [[1,2,2,1]]
     for data in testdata:
         print("Test dataset: {}".format(data))
         test = Heap(data, "M")
+        print("MaxHeap:", test.Heap)
         print("Heapsort with Max Heap: {}".format(test.heapSort()))
         test = Heap(data, "m")
         print("Heapsort with Min Heap: {}".format(test.heapSort()))
@@ -156,10 +151,10 @@ def generalTest():
 
 
 def extractTest():
-    testdata = [[2, 3, 4]]
+    testdata = [[4, 2,2,1]]
     for data in testdata:
         print("Test dataset: {}".format(data))
-        test = Heap(data, "m")
+        test = Heap(data, "M")
         print("heapified dataset: {}".format(test.Heap))
         for i in range(len(data) - 1):
             test.extract()
@@ -168,4 +163,8 @@ def extractTest():
 
 
 if __name__ == "__main__":
-    extractTest()
+    test=2
+    if test ==1:
+        generalTest()
+    else:
+        extractTest()

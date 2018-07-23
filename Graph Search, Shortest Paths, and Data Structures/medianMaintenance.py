@@ -30,11 +30,10 @@ class HeapFormedian:
         self.median = None
         for element in dataset:
             self.addNode(element)
-            self.median = self.getMedian()
-            print("New median: ", self.getMedian())
             print("\n\n")
 
     def addNode(self, node):
+        print("new node:",node)
         if self.median is None:
             self.median = node
             self.minHeap.addNode(node)
@@ -58,6 +57,7 @@ class HeapFormedian:
         self.reviseHeapTop()
         printTop(self)
 
+        self.median = self.getMedian()
 
     def isBalance(self):
         rightnodes = len(self.minHeap.Heap)
@@ -105,12 +105,9 @@ class HeapFormedian:
 
 
 def test():
-    testData = [[1, 2, 3, 4, 5, 6, 7, 8, 9]]
+    testData = [[10,99,100,1, 2,2,4,1,0,100,88]]
     for test in testData:
         testcase = HeapFormedian(test)
-        printHeap(testcase)
-        print("median: ", testcase.getMedian())
-        print("\n\n")
 
 
 if __name__ == "__main__":
