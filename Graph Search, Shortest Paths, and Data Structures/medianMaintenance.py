@@ -33,7 +33,7 @@ class HeapFormedian:
             print("\n\n")
 
     def addNode(self, node):
-        print("new node:",node)
+        print("new node:", node)
         if self.median is None:
             self.median = node
             self.minHeap.addNode(node)
@@ -105,7 +105,7 @@ class HeapFormedian:
 
 
 def test():
-    testData = [[10,99,100,1, 2,2,4,1,0,100,88]]
+    testData = [[10, 99, 100, 1, 2, 2, 4, 1, 0, 100, 88]]
     for test in testData:
         testcase = HeapFormedian(test)
 
